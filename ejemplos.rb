@@ -1,5 +1,5 @@
 # instrumentariumxxi
-## Código de ejemplo del capítulo "La programación informática en el aula de música"
+## Código de ejemplo del capítulo "Código informático y algoritmos como instrumentos musicales en educación"
 
 ###########################################
 # Ejemplos elaborados por Jesús Jara      #
@@ -62,3 +62,49 @@ sample :perc_bell, rate: -1
 sample :loop_amen_full, start: 0.25, finish: 0.3
 sample :ambi_lunar_land, rate: -1.5, start: 0.1, finish: 0.3
 sample :perc_door, rate: 0.2, finish: 0.2
+
+# Ejemplo 7. Sonidos electrónicos
+loop do
+  use_synth_defaults attack: 1, cutoff: 60, release: 1, amp: 0.25, sustain: 4
+  with_fx :reverb, room: 0.5 do
+    3.times do
+      synth :prophet, note: scale(:f3, :aeolian, num_octaves: 3).choose, pan: rrand(-1,1)
+      sleep rrand(0.5, 1)
+    end
+    sleep 3
+  end
+end
+
+#Ejemplo 8. Ejemplo control sonido con motion
+live_loop :motion do
+  a, b, c = sync "/osc:192.168.1.90:64392/syntien/motion/1/scope2"
+  nota = a.abs*30+50
+  dura = b.abs*10
+  reve = c.abs*30+50
+  with_fx :ring_mod, freq: reve do
+    synth :dull_bell, note: nota, sustain: dura, amp: 0.2
+  end
+  sleep 0.25
+end
+
+#Ejemplo 9. Live electronics.
+#este programa cuenta 3 segundos hacia atrás y luego graba lo que
+#entre por el micrófono del ordenador durante dos segundos
+puts 3
+sleep 1
+puts 2
+sleep 1
+puts 1
+sleep 1
+
+with_fx :record, buffer: buffer("grabacion-sonicpi", 4) do
+  with_fx :flanger, phase: 4 do
+    with_fx :echo, phase: 2 do
+      live_audio :hola
+    end
+  end
+end
+
+sleep 2
+
+stop
