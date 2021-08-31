@@ -57,13 +57,22 @@ end
   sleep 0.25
 end
 
-# Ejemplo 6. Objetos sonoros
+# Ejemplo 6. Objetos sonoros. Collage de sonidos.
 sample :perc_bell, rate: -1
 sample :loop_amen_full, start: 0.25, finish: 0.3
 sample :ambi_lunar_land, rate: -1.5, start: 0.1, finish: 0.3
 sample :perc_door, rate: 0.2, finish: 0.2
 
-# Ejemplo 7. Sonidos electrónicos
+# Ejemplo 7. Repetición de fragmentos de audio
+live_loop :bucle do
+  inicio = rand(0.75)
+  5.times do
+    sample :loop_industrial, start: inicio, finish: inicio + 0.25
+    sleep 0.25
+  end
+end
+
+# Ejemplo 8. Sonidos electrónicos
 loop do
   use_synth_defaults attack: 1, cutoff: 60, release: 1, amp: 0.25, sustain: 4
   with_fx :reverb, room: 0.5 do
@@ -75,7 +84,7 @@ loop do
   end
 end
 
-#Ejemplo 8. Ejemplo control sonido con motion
+# Ejemplo 9. Ejemplo control sonido con motion
 live_loop :motion do
   a, b, c = sync "/osc:192.168.1.90:64392/syntien/motion/1/scope2"
   nota = a.abs*30+50
@@ -87,7 +96,7 @@ live_loop :motion do
   sleep 0.25
 end
 
-#Ejemplo 9. Live electronics.
+# Ejemplo 10. Live electronics.
 #este programa cuenta 3 segundos hacia atrás y luego graba lo que
 #entre por el micrófono del ordenador durante dos segundos
 puts 3
